@@ -1,7 +1,15 @@
-1. Install Python 3.4.3 from https://www.python.org/downloads/release/python-343/, and select Windows Installer
-2. Right click scripts.bat (If running on Windows) and click "Run as Administrator"
-3. Open System Settings and pair device with accelerometer (Should appear as "RNBT-###"). Default Pin is 1234
-4. Double click main.py to start program
+Branching from https://github.com/chrisw7/SMART-Moyo for ease of access for 3rd parties.
+Python - based prototype for low-cost CPR training system with real-time feedback
+Android App - In development
 
-###################################################
-Installing Drivers
+## Instructions
+
+1. Downloading Python and Dependancies
+2. Downloading appropriate Drivers
+
+
+# Python Mobile
+
+1. Download Python Apps
+2. Pair IMU with phone via BlueTooth
+3. TBD
