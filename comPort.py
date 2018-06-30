@@ -11,6 +11,7 @@ import time
         A list of the serial ports available on the system
 """
 def findPorts():
+    #TODO incosistent variable definitions for bluetooth in Windows
     bluetooth = False
     if sys.platform.startswith('win'):
         ports = ['COM%s' % (i + 1) for i in range(256)]
@@ -41,13 +42,12 @@ def findPorts():
             except (OSError, serial.SerialException):
                 pass
 
-
-
     if result == []:
         print("\n\nThe accelerometer is not on or not connected properly\n\n")
         print("If you have turned it on, give it a few moments and try again shortly\n\n")
         time.sleep(2)
         exit()
+        
     return result[0]
 
 
