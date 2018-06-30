@@ -17,6 +17,8 @@ def close_program(L, sysVersion):
         inpt = input()
     L.append(inpt)
 
+#Info for saving user's compression data into 
+#file for later use
 repeatUser = False
 directory = "records"
 sysVersion = sys.version[0]
@@ -24,6 +26,7 @@ sysVersion = sys.version[0]
 fileName = feedback.getUser(sysVersion)
 age = feedback.getAge(sysVersion)
 
+#Setting functional constants
 GRAVITY = 9.80665
 compressionresetTime = 2
 txyz = 3 #Z index
@@ -41,8 +44,10 @@ print("Min Depth: " + str(minDepth) + "\n")
 print("Max Depth: " + str(maxDepth) + "\n")
 print("Depth Tolerance: " + str(depthTolerance) + "\n")
 
+#Short pause
 time.sleep(0.4)
 
+#Creating files for storing compression data
 if not os.path.exists(directory):
     os.makedirs(directory)
 
@@ -56,7 +61,7 @@ if os.path.isfile(filePath):
     os.remove(filePath)
 
 
-#Dynamically find ports on Linux or Windows
+#Dynamically find ports on Linux or Windows TODO: Androids (Check for different OS?)
 #Sets seconds = 2400 bps / 208 bits = 11.5 /second
 port = comPort.findPorts()
 baud = 9600
@@ -69,18 +74,18 @@ print("\nCalibrating accelerometer")
 print("\nDO NOT MOVE\n\n\n")
 
 data = [];
+
 #Takes accelerometer data to perform calibrations
 for i in range(0, 39):
     rawData = comPort.readSerial(port, byte)
     rawArray = calibrate.formatData(rawData, numpy)
     data.append(rawArray)
 
-#Takes one component of acceleration to perform calculationss
+#Takes one component of acceleration (Z on IMU) to perform calculationss
 data = numpy.array(data)
 accel = data[:, txyz]
 
-
-#Calibrates acceleromter
+#Calibrates accelerometer
 offset = calibrate.offsetAccel(accel, numpy)
 
 accel = (accel[:] - offset)
@@ -92,6 +97,7 @@ if accel.all() == False:
 
 print("Calibrated \n\nBegin Compressions")
 
+#Checks if user wants to quit the program 
 L = []
 thread.start_new_thread(close_program, (L,sysVersion))
 
