@@ -11,8 +11,9 @@ import time
         A list of the serial ports available on the system
 """
 def findPorts():
-    #TODO incosistent variable definitions for bluetooth in Windows
+    # TODO incosistent variable definitions for bluetooth in Windows
     bluetooth = False
+    print(sys.platform) #Debugging to android
     if sys.platform.startswith('win'):
         ports = ['COM%s' % (i + 1) for i in range(256)]
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -33,21 +34,13 @@ def findPorts():
             result.append(port)
         except (OSError, serial.SerialException):
             pass
-    if bluetooth:
-        for port in bluetooth:
-            try:
-                s = serial.Serial(port)
-                s.close()
-                result.append(port)
-            except (OSError, serial.SerialException):
-                pass
 
     if result == []:
         print("\n\nThe accelerometer is not on or not connected properly\n\n")
         print("If you have turned it on, give it a few moments and try again shortly\n\n")
         time.sleep(2)
         exit()
-        
+
     return result[0]
 
 
@@ -71,15 +64,18 @@ def openSerial(port, baud):
         ser.close()
         exit()
 
-    return
+    return ser
 
-#Reads one line from the serial port
-def readSerial(port, byte):
-    ser = serial.Serial(port)
-    data = ser.read(byte).decode("utf-8")
+# Reads one line from the serial port
+def readSerial(ser):
+    # Removes possible incomplete lines
+    cleanLine = ser.readline().decode('utf-8')
+    data = ser.readline().decode('utf-8')
+
     return data
 
-#Fixes each line as time becomes large
+# Fixes each line as time becomes large
+# Readline Might have made this unnecessary
 def fixByteSize(byte, data):
 #TODO
     return

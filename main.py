@@ -17,7 +17,7 @@ def close_program(L, sysVersion):
         inpt = input()
     L.append(inpt)
 
-#Info for saving user's compression data into 
+#Info for saving user's compression data into
 #file for later use
 repeatUser = False
 directory = "records"
@@ -68,7 +68,7 @@ baud = 9600
 byte = 26  #208 bits
 
 #Opens the serial port
-comPort.openSerial(port, baud)
+ser = comPort.openSerial(port, baud)
 
 print("\nCalibrating accelerometer")
 print("\nDO NOT MOVE\n\n\n")
@@ -77,7 +77,7 @@ data = [];
 
 #Takes accelerometer data to perform calibrations
 for i in range(0, 39):
-    rawData = comPort.readSerial(port, byte)
+    rawData = comPort.readSerial(ser)
     rawArray = calibrate.formatData(rawData, numpy)
     data.append(rawArray)
 
@@ -97,7 +97,7 @@ if accel.all() == False:
 
 print("Calibrated \n\nBegin Compressions")
 
-#Checks if user wants to quit the program 
+#Checks if user wants to quit the program
 L = []
 thread.start_new_thread(close_program, (L,sysVersion))
 
@@ -113,7 +113,7 @@ while True:
     while currentTime < endTime:
         currentTime = int(cTime())
 
-        rawData = comPort.readSerial(port, byte)
+        rawData = comPort.readSerial(ser)
         rawArray = calibrate.formatData(rawData, numpy)
 
         data.append(rawArray)
