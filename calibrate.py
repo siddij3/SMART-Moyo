@@ -8,7 +8,6 @@ def formatData(data, numpy):
     for i in range(0, 4):
         frmtData[i] = data[i].strip()
         frmtData[i] = float(data[i].encode('utf-8'))
-    #data[0] = int(data[0])
 
     return frmtData
 
