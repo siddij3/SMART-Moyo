@@ -5,19 +5,19 @@ import matplotlib.pyplot as plt
 import graph
 
 def calculations(time, accel, numpy):
-    #Sampling Frequency
+    # Sampling Frequency
     Fs = 1/(time[1]-time[0])
 
-    #Zero Padding
+    # Zero Padding
     N = len(time)
 
-    #Apply hanning window over interval
+    # Apply hanning window over interval
     w = numpy.hanning(len(accel))
     coherentGain = sum(w)/len(accel)
     hanningApplied = numpy.zeros((len(accel)))
     hanningApplied = accel[:]*w[:]/coherentGain
 
-    #Extract Windowed Double Sided FFT for phase and frequency analysis
+    # Extract Windowed Double Sided FFT for phase and frequency analysis
     fftPolarDouble = numpy.fft.fft(hanningApplied, N)/N
     fftPolarSingle = fftPolarDouble[1:int(N/2) + 1]
 
@@ -27,22 +27,22 @@ def calculations(time, accel, numpy):
     fftPolarSingle[2:end - 1] = 2*fftPolarSingle[2:end -1]
     fftSmooth[2:end - 1] = 2*fftSmooth[2:end -1]
 
-    #Scale Frequency Bins
+    # Scale Frequency Bins
     freqBin = Fs*numpy.arange(int(N/2))/N
     ampl = []
 
-    #Find first 3 largest peaks
+    # Find first 3 largest peaks
     indexes = peak.indexes(fftSmooth, min_dist= 2 )
     for i in range(len(indexes)):
         ampl.append(fftSmooth[indexes[i]])
         Fs = indexes
 
-    #Nuber of harmonics to extract from fft
+    # Number of harmonics to extract from fft
     harmonics = len(ampl)
     if harmonics > 3:
         harmonics = 3
 
-    #Calculating phase shift of acceleration and using fundamental frequency
+    # Calculating phase shift of acceleration and using fundamental frequency
     if len(indexes) > 1:
         z = fftPolarSingle[Fs[0:harmonics]]
         fcc = freqBin[Fs[0]]
@@ -54,14 +54,14 @@ def calculations(time, accel, numpy):
     else:
         return 0, 0
 
-    #Calculating S_k (cm) given A_k(m/s/s) and fcc, finding phase shift
+    # Calculating S_k (cm) given A_k(m/s/s) and fcc, finding phase shift
     A_k = ampl[0:harmonics]
     tmp = numpy.arange(1, harmonics + 1)
     tmp1 = (tmp*tmp)*(2*pi*fcc)**2
     S_k = 100*(A_k/tmp1)
     phi = theta + pi
 
-    #Calculating Displacement Series
+    # Calculating Displacement Series
     sofT = numpy.zeros(len(time))
     if harmonics != 1:
         for i in range(0, harmonics):
@@ -78,10 +78,10 @@ def calculations(time, accel, numpy):
 
     #Writes to txt (debugging only)
 
-    #Plots graph (development only)
+    # Plots graph (development only)
     #graph.plot(freqBin, fftSmooth, "fbin (s)", "Amplitude", "Distance vs Time", 311, 1, plt)
     #graph.plot(time, hanningApplied, "Time (s)", "Accel", "Hanning vs Time", 312, 0, plt)
     #graph.plot(time, sofT, "Time (s)", "Displacement", "Distance vs Time", 313, 0, plt)
-    plt.show(block=False)
+    #plt.show(block=False)
 
     return sofT, rate
