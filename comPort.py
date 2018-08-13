@@ -28,7 +28,7 @@ def findPorts():
         raise EnvironmentError('Unsupported platform')
 
     result = []
-    print(ports)
+
     for port in ports:
         try:
             s = serial.Serial(port, timeout=timeout)
