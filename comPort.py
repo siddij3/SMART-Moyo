@@ -11,7 +11,7 @@ import time
         A list of the serial ports available on the system
 """
 def findPorts():
-    # TODO incosistent variable definitions for bluetooth in Windows
+    # Checks for available ports in the appropriate OS
     bluetooth = False
     timeout = 1 #second
     print(sys.platform) #Debugging to android
@@ -29,6 +29,7 @@ def findPorts():
 
     result = []
 
+    # Checks for usable and connected ports
     for port in ports:
         try:
             s = serial.Serial(port, timeout=timeout)
@@ -49,7 +50,7 @@ def findPorts():
     return result[0]
 
 
-#Checks for idle accelerometer (No compressions being performed)
+# Checks for idle accelerometer (No compressions being performed)
 def idle(accel, err):
     tmp = max(accel) - min(accel)
     if abs(tmp) <= 0.09*err:
@@ -58,7 +59,7 @@ def idle(accel, err):
 
     return False
 
-#Opens up manual serial port
+# Opens up manual serial port
 def openSerial(port, baud):
     ser = serial.Serial(port, baud)
 
@@ -78,9 +79,3 @@ def readSerial(ser):
     data = ser.readline().decode('utf-8')
 
     return data
-
-# Fixes each line as time becomes large
-# Readline Might have made this unnecessary
-def fixByteSize(byte, data):
-#TODO
-    return
