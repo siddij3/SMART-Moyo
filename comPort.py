@@ -13,9 +13,10 @@ import time
 def findPorts():
     # TODO incosistent variable definitions for bluetooth in Windows
     bluetooth = False
+    timeout = 1 #second
     print(sys.platform) #Debugging to android
     if sys.platform.startswith('win'):
-        ports = ['COM%s' % (i + 1) for i in range(256)]
+        ports = ['COM%s' % (i + 1) for i in range(16)]
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         # this excludes your current terminal "/dev/tty"
         ports = glob.glob('/dev/tty[A-Za-z]*')
@@ -27,11 +28,15 @@ def findPorts():
         raise EnvironmentError('Unsupported platform')
 
     result = []
+    print(ports)
     for port in ports:
         try:
-            s = serial.Serial(port)
+            s = serial.Serial(port, timeout=timeout)
+            tmp = s.readline().decode('utf-8')
             s.close()
-            result.append(port)
+
+            if (tmp != ''):
+                result.append(port)
         except (OSError, serial.SerialException):
             pass
 
