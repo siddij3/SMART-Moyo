@@ -76,6 +76,7 @@ print("\nDO NOT MOVE\n\n\n")
 data = [];
 
 #Takes accelerometer data to perform calibrations
+comPort.cleanLine()
 for i in range(0, 39):
     rawData = comPort.readSerial(ser)
     rawArray = calibrate.formatData(rawData, numpy)
@@ -113,6 +114,7 @@ while True:
     while currentTime < endTime:
         currentTime = int(cTime())
 
+        comPort.cleanLine()
         rawData = comPort.readSerial(ser)
         rawArray = calibrate.formatData(rawData, numpy)
 
