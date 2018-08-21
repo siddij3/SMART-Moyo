@@ -72,10 +72,12 @@ def openSerial(port, baud):
 
     return ser
 
+def cleanSerial(ser):
+    cleanLine = ser.readline()
+
 # Reads one line from the serial port
 def readSerial(ser):
     # Removes possible incomplete lines
-    cleanLine = ser.readline().decode('utf-8')
     data = ser.readline().decode('utf-8')
 
     return data
