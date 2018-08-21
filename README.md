@@ -6,3 +6,4 @@ Android App - In development
 
 1. Downloading Python and Dependancies
 2. Downloading appropriate Drivers
+3. Pair Bluetooth Device
