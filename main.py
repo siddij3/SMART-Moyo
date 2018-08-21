@@ -105,6 +105,9 @@ thread.start_new_thread(close_program, (L,sysVersion))
 #Performs analysis on compressions every 2 seconds concurrent with compressions
 iteration = 0
 minIterations = 5
+file  = open("data.txt", "w+")
+
+
 while True:
     data, sTime, accel = [], [], []
 
@@ -116,6 +119,7 @@ while True:
 
         comPort.cleanLine()
         rawData = comPort.readSerial(ser)
+        file.write(rawData)
         rawArray = calibrate.formatData(rawData, numpy)
 
         data.append(rawArray)
@@ -124,6 +128,7 @@ while True:
         sTime = data[:, 0]
         accel = data[:, txyz]
         data = data.tolist()
+        
 
         sTime = calibrate.scaleTime(sTime)
         accel = (accel[:] - offset)*GRAVITY
