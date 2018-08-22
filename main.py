@@ -76,7 +76,7 @@ print("\nDO NOT MOVE\n\n\n")
 data = [];
 
 #Takes accelerometer data to perform calibrations
-comPort.cleanLine()
+comPort.cleanLine(ser)
 for i in range(0, 39):
     rawData = comPort.readSerial(ser)
     rawArray = calibrate.formatData(rawData, numpy)
@@ -117,7 +117,7 @@ while True:
     while currentTime < endTime:
         currentTime = int(cTime())
 
-        comPort.cleanLine()
+        comPort.cleanLine(ser)
         rawData = comPort.readSerial(ser)
         file.write(rawData)
         rawArray = calibrate.formatData(rawData, numpy)
@@ -128,7 +128,7 @@ while True:
         sTime = data[:, 0]
         accel = data[:, txyz]
         data = data.tolist()
-        
+
 
         sTime = calibrate.scaleTime(sTime)
         accel = (accel[:] - offset)*GRAVITY

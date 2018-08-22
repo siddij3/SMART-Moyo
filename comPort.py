@@ -72,7 +72,7 @@ def openSerial(port, baud):
 
     return ser
 
-def cleanSerial(ser):
+def cleanLine(ser):
     cleanLine = ser.readline()
 
 # Reads one line from the serial port
